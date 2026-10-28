@@ -3,9 +3,12 @@ import { motion } from 'framer-motion';
 import { Users, Award, CheckCircle2, Calendar, Phone, ArrowRight, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { COACHES } from '../../data/ogtaData';
+import { useSiteContent } from '../../context/SiteContentContext';
 
 export function MeetTheStaffPage() {
-  // Mapping downloaded staff media images
+  const { coachesList } = useSiteContent();
+
+  // Mapping fallback staff media images
   const coachImages: Record<string, string> = {
     susi: '/images/media_22.jpg',
     darren: '/images/media_23.jpg',
@@ -15,6 +18,9 @@ export function MeetTheStaffPage() {
     raphe: '/images/media_27.jpg',
     james: '/images/media_2.jpg',
   };
+
+  // Combine dynamic CMS coaches if present, fallback to static COACHES
+  const displayCoaches = coachesList && coachesList.length > 0 ? coachesList : COACHES;
 
   return (
     <div className="bg-white min-h-screen text-slate-800">
@@ -55,9 +61,14 @@ export function MeetTheStaffPage() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="space-y-12">
-            {COACHES.map((coach, index) => {
-              const imageSrc = coachImages[coach.id] || '/images/media_1.jpg';
+            {displayCoaches.map((coach: any, index: number) => {
+              const imageSrc = coach.image || coachImages[coach.id] || '/images/media_1.jpg';
               const isEven = index % 2 === 1;
+              const rawCreds = Array.isArray(coach.credentials) 
+                ? coach.credentials 
+                : typeof coach.credentials === 'string'
+                  ? coach.credentials.split(/[•,]/).map((c: string) => c.trim()).filter(Boolean)
+                  : [];
 
               return (
                 <div
@@ -103,7 +114,7 @@ export function MeetTheStaffPage() {
                         Key Credentials & Experience
                       </h4>
                       <div className="flex flex-wrap gap-2">
-                        {coach.credentials.map((cred, i) => (
+                        {rawCreds.map((cred: string, i: number) => (
                           <span
                             key={i}
                             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-950 text-xs font-medium border border-emerald-200/80"

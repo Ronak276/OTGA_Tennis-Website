@@ -6,6 +6,7 @@ import { Footer } from './components/layout/Footer';
 import { ScrollToTop } from './components/layout/ScrollToTop';
 import { PageTransition } from './components/skiper/PageTransition';
 import { AuthProvider } from './context/AuthContext';
+import { SiteContentProvider } from './context/SiteContentContext';
 
 // Homepage
 import { HomePage } from './pages/HomePage';
@@ -113,18 +114,20 @@ function AnimatedRoutes() {
 export function App() {
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <ScrollToTop />
-        <div className="min-h-screen bg-white text-slate-900 flex flex-col font-sans antialiased selection:bg-lime-200 selection:text-emerald-950">
-          <Navbar />
-          
-          <main className="flex-grow">
-            <AnimatedRoutes />
-          </main>
+      <SiteContentProvider>
+        <AuthProvider>
+          <ScrollToTop />
+          <div className="min-h-screen bg-white text-slate-900 flex flex-col font-sans antialiased selection:bg-lime-200 selection:text-emerald-950">
+            <Navbar />
+            
+            <main className="flex-grow">
+              <AnimatedRoutes />
+            </main>
 
-          <Footer />
-        </div>
-      </AuthProvider>
+            <Footer />
+          </div>
+        </AuthProvider>
+      </SiteContentProvider>
     </BrowserRouter>
   );
 }

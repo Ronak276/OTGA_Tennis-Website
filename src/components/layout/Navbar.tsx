@@ -20,9 +20,11 @@ import {
 } from 'lucide-react';
 import { CLUB_INFO } from '../../data/ogtaData';
 import { useAuth } from '../../context/AuthContext';
+import { useSiteContent } from '../../context/SiteContentContext';
 
 export const Navbar: React.FC = () => {
   const { user, signOut } = useAuth();
+  const { announcement } = useSiteContent();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -91,6 +93,23 @@ export const Navbar: React.FC = () => {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md transition-all duration-300 border-b border-slate-200/80 shadow-sm">
+      {/* Dynamic Top Announcement Strip (Controlled by CMS) */}
+      {announcement.enabled && announcement.message && (
+        <div className="bg-[#0F392B] text-white py-1.5 px-4 text-xs font-medium text-center flex items-center justify-center gap-2 border-b border-emerald-950">
+          {announcement.badge && (
+            <span className="px-2 py-0.5 text-[10px] font-bold bg-[#D8F231] text-[#0F392B] shrink-0">
+              {announcement.badge}
+            </span>
+          )}
+          <span className="truncate">{announcement.message}</span>
+          {announcement.ctaText && (
+            <Link to={announcement.ctaLink || '/courtrentals'} className="underline font-bold text-[#D8F231] hover:text-white ml-1 shrink-0">
+              {announcement.ctaText} →
+            </Link>
+          )}
+        </div>
+      )}
+
       {/* Main Navbar - Full width for extreme left logo and right CTAs */}
       <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12">
         <div className="flex items-center justify-between h-20 gap-4 xl:gap-8">

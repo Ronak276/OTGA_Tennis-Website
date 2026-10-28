@@ -2,15 +2,17 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Clock, Calendar, ShieldCheck, CheckCircle2, DollarSign, Info, Phone, ArrowRight, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useSiteContent } from '../../context/SiteContentContext';
 
 export function HourlyRentalsPage() {
+  const { courtRates } = useSiteContent();
   const [hours, setHours] = useState(1);
   const [bookingType, setBookingType] = useState<'advance' | 'within72'>('within72');
   const [selectedDay, setSelectedDay] = useState('weekday');
   const [selectedTime, setSelectedTime] = useState('09:00 AM');
   const [requested, setRequested] = useState(false);
 
-  const ratePerHour = bookingType === 'within72' ? 90 : 110;
+  const ratePerHour = bookingType === 'within72' ? (courtRates.hourlyRate || 90) : (courtRates.hourlyRate || 90) + 20;
   const totalPrice = ratePerHour * hours;
 
   return (
@@ -94,7 +96,7 @@ export function HourlyRentalsPage() {
                 <h3 className="text-2xl font-serif font-bold text-[#0F392B] mb-1">Within 72 Hours</h3>
                 <p className="text-slate-600 text-sm mb-6">Book open courts 1 to 3 days in advance.</p>
                 <div className="flex items-baseline gap-1 mb-6">
-                  <span className="text-5xl font-serif font-bold text-[#0F392B]">$90</span>
+                  <span className="text-5xl font-serif font-bold text-[#0F392B]">${courtRates.hourlyRate || 90}</span>
                   <span className="text-slate-500 font-medium">/ hour</span>
                 </div>
                 <ul className="space-y-3 mb-8 text-sm text-slate-700">
@@ -138,7 +140,7 @@ export function HourlyRentalsPage() {
                 <h3 className="text-2xl font-serif font-bold text-slate-900 mb-1">More Than 72 Hours Ahead</h3>
                 <p className="text-slate-600 text-sm mb-6">Lock in your court guaranteed well ahead of time.</p>
                 <div className="flex items-baseline gap-1 mb-6">
-                  <span className="text-5xl font-serif font-bold text-slate-900">$110</span>
+                  <span className="text-5xl font-serif font-bold text-slate-900">${courtRates.advanceRate || 110}</span>
                   <span className="text-slate-500 font-medium">/ hour</span>
                 </div>
                 <ul className="space-y-3 mb-8 text-sm text-slate-700">

@@ -29,8 +29,10 @@ import { CLUB_INFO } from '../data/ogtaData';
 import { SpotlightCard } from '../components/skiper/SpotlightCard';
 import { Marquee } from '../components/skiper/Marquee';
 import { AnimatedCounter } from '../components/skiper/AnimatedCounter';
+import { useSiteContent } from '../context/SiteContentContext';
 
 export const HomePage: React.FC = () => {
+  const { hero, clubInfo } = useSiteContent();
   // Testimonials
   const testimonials = [
     {
@@ -81,7 +83,7 @@ export const HomePage: React.FC = () => {
                 className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-[#0F392B] border border-emerald-200 shadow-sm"
               >
                 <Sparkles className="w-3.5 h-3.5 text-[#C85A32]" />
-                <span>Premier Indoor Har-Tru Tennis • Old Greenwich, CT</span>
+                <span>{hero.badge}</span>
               </motion.div>
 
               <motion.h1 
@@ -90,8 +92,7 @@ export const HomePage: React.FC = () => {
                 transition={{ delay: 0.1, duration: 0.5 }}
                 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#0F392B] leading-[1.12]"
               >
-                Where Passion Meets <br className="hidden sm:inline" />
-                <span className="text-[#C85A32]">Championship Clay</span>
+                {hero.headline}
               </motion.h1>
 
               <motion.p 
@@ -100,7 +101,7 @@ export const HomePage: React.FC = () => {
                 transition={{ delay: 0.2, duration: 0.5 }}
                 className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-sans"
               >
-                Experience Fairfield County's finest climate-controlled tennis facility. Featuring five impeccably maintained championship Har-Tru clay courts, elite junior developmental pathways, dynamic adult clinics, and guaranteed seasonal court reservations — with zero membership or guest fees required.
+                {hero.subheadline}
               </motion.p>
 
               {/* Action Buttons */}
@@ -111,25 +112,25 @@ export const HomePage: React.FC = () => {
                 className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4"
               >
                 <Link
-                  to="/book-online"
+                  to={hero.primaryCtaLink || '/book-online'}
                   className="w-full sm:w-auto px-7 py-4 rounded-xl bg-[#0F392B] text-white font-bold text-sm hover:bg-[#18523f] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-md shadow-emerald-950/15 flex items-center justify-center gap-2"
                 >
                   <Calendar className="w-4 h-4 text-lime-300" />
-                  <span>Book Point Play ($60)</span>
+                  <span>{hero.primaryCtaText || 'Book Point Play ($60)'}</span>
                 </Link>
                 <Link
-                  to="/free-assessments"
+                  to={hero.secondaryCtaLink || '/free-assessments'}
                   className="w-full sm:w-auto px-7 py-4 rounded-xl bg-[#C85A32] text-white font-bold text-sm hover:bg-[#b04a25] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-md flex items-center justify-center gap-2"
                 >
                   <Sparkles className="w-4 h-4 text-white" />
-                  <span>Free Junior Assessment</span>
+                  <span>{hero.secondaryCtaText || 'Free Junior Assessment'}</span>
                 </Link>
                 <a
-                  href={`tel:${CLUB_INFO.phone}`}
+                  href={`tel:${clubInfo.phone}`}
                   className="w-full sm:w-auto px-5 py-4 rounded-xl border border-slate-300 bg-white text-slate-700 font-semibold text-sm hover:bg-slate-50 transition-colors flex items-center justify-center gap-2 shadow-sm"
                 >
                   <Phone className="w-4 h-4 text-[#0F392B]" />
-                  <span>{CLUB_INFO.phone}</span>
+                  <span>{clubInfo.phone}</span>
                 </a>
               </motion.div>
 
@@ -167,9 +168,12 @@ export const HomePage: React.FC = () => {
                 {/* Main Court Image (Clean and natural) */}
                 <div className="rounded-3xl overflow-hidden shadow-xl border border-slate-200/80 bg-slate-100 aspect-[4/3]">
                   <img
-                    src="/images/media_1.jpg"
+                    src={hero.imageUrl || '/images/media_1.jpg'}
                     alt="Old Greenwich Tennis Academy Har-Tru Courts"
                     className="w-full h-full object-cover hover:scale-[1.02] transition-transform duration-500"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = '/images/media_1.jpg';
+                    }}
                   />
                 </div>
               </motion.div>
