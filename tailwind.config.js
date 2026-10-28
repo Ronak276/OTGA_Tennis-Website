@@ -6,6 +6,17 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    borderRadius: {
+      none: '0px',
+      sm: '0px',
+      DEFAULT: '0px',
+      md: '0px',
+      lg: '0px',
+      xl: '0px',
+      '2xl': '0px',
+      '3xl': '0px',
+      full: '0px',
+    },
     container: {
       center: true,
       padding: "2rem",
@@ -62,11 +73,6 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-      },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
         serif: ['"Playfair Display"', 'Georgia', 'serif'],

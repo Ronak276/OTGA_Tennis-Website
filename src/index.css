@@ -34,13 +34,14 @@
     --input: 214 20% 90%;
     --ring: 159 58% 15%;
 
-    --radius: 0.75rem;
+    --radius: 0px;
   }
 }
 
 @layer base {
-  * {
+  *, *::before, *::after {
     @apply border-border;
+    border-radius: 0 !important;
   }
   body {
     @apply bg-background text-foreground font-sans antialiased selection:bg-tennis-volt selection:text-tennis-darkGreen;
