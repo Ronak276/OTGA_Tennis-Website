@@ -116,8 +116,13 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/signup" className="hover:text-lime-300 transition-colors font-medium text-lime-300">
+                <Link to="/book-online" className="hover:text-lime-300 transition-colors font-medium text-lime-300">
                   Weekly Point Play ($60)
+                </Link>
+              </li>
+              <li>
+                <Link to="/login" className="hover:text-lime-300 transition-colors text-white font-medium">
+                  Member Portal (Sign In / Sign Up)
                 </Link>
               </li>
               <li>

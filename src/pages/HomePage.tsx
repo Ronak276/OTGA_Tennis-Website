@@ -111,7 +111,7 @@ export const HomePage: React.FC = () => {
                 className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4"
               >
                 <Link
-                  to="/signup"
+                  to="/book-online"
                   className="w-full sm:w-auto px-7 py-4 rounded-xl bg-[#0F392B] text-white font-bold text-sm hover:bg-[#18523f] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-md shadow-emerald-950/15 flex items-center justify-center gap-2"
                 >
                   <Calendar className="w-4 h-4 text-lime-300" />
@@ -370,7 +370,7 @@ export const HomePage: React.FC = () => {
               </div>
               <div className="pt-6 border-t border-slate-200 mt-6 flex flex-col gap-2">
                 <Link
-                  to="/signup"
+                  to="/book-online"
                   className="w-full py-3 rounded-xl bg-[#0F392B] text-xs font-bold text-white hover:bg-[#18523f] transition-colors text-center shadow-md flex items-center justify-center gap-1.5"
                 >
                   <span>Book Point Play ($60)</span>
@@ -598,7 +598,7 @@ export const HomePage: React.FC = () => {
 
               <div className="pt-4 flex flex-wrap gap-4">
                 <Link
-                  to="/signup"
+                  to="/book-online"
                   className="px-7 py-4 rounded-xl bg-lime-300 text-[#0F392B] font-bold hover:bg-lime-200 transition-all text-sm shadow-lg flex items-center gap-2"
                 >
                   <span>View Point Play Schedule</span>
@@ -892,7 +892,7 @@ export const HomePage: React.FC = () => {
                 Contact & Directions
               </Link>
               <Link
-                to="/signup"
+                to="/book-online"
                 className="w-full sm:w-auto px-7 py-4 rounded-xl bg-white border border-slate-300 text-slate-800 font-bold text-sm hover:bg-slate-50 hover:scale-[1.02] active:scale-[0.98] transition-all text-center shadow-sm"
               >
                 Book Point Play Online ($60)

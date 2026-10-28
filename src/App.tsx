@@ -5,6 +5,7 @@ import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { ScrollToTop } from './components/layout/ScrollToTop';
 import { PageTransition } from './components/skiper/PageTransition';
+import { AuthProvider } from './context/AuthContext';
 
 // Homepage
 import { HomePage } from './pages/HomePage';
@@ -42,6 +43,9 @@ import { CoachResourcesPage } from './pages/about/CoachResourcesPage';
 // Booking & Point Play Pages
 import { BookOnlinePage } from './pages/booking/BookOnlinePage';
 
+// Authentication Pages
+import { AuthPage } from './pages/auth/AuthPage';
+
 function AnimatedRoutes() {
   const location = useLocation();
 
@@ -51,6 +55,11 @@ function AnimatedRoutes() {
         {/* Home Routes */}
         <Route path="/" element={<PageTransition><HomePage /></PageTransition>} />
         <Route path="/home" element={<PageTransition><HomePage /></PageTransition>} />
+
+        {/* Authentication Routes */}
+        <Route path="/login" element={<PageTransition><AuthPage initialMode="login" /></PageTransition>} />
+        <Route path="/signup" element={<PageTransition><AuthPage initialMode="signup" /></PageTransition>} />
+        <Route path="/register" element={<PageTransition><AuthPage initialMode="signup" /></PageTransition>} />
 
         {/* Junior Routes */}
         <Route path="/juniorprograms" element={<PageTransition><JuniorProgramsPage /></PageTransition>} />
@@ -91,7 +100,6 @@ function AnimatedRoutes() {
         <Route path="/contact" element={<PageTransition><ContactUsPage /></PageTransition>} />
 
         {/* Booking & Point Play Routes */}
-        <Route path="/signup" element={<PageTransition><BookOnlinePage /></PageTransition>} />
         <Route path="/book-online" element={<PageTransition><BookOnlinePage /></PageTransition>} />
         <Route path="/point-play" element={<PageTransition><BookOnlinePage /></PageTransition>} />
 
@@ -105,16 +113,18 @@ function AnimatedRoutes() {
 export function App() {
   return (
     <BrowserRouter>
-      <ScrollToTop />
-      <div className="min-h-screen bg-white text-slate-900 flex flex-col font-sans antialiased selection:bg-lime-200 selection:text-emerald-950">
-        <Navbar />
-        
-        <main className="flex-grow">
-          <AnimatedRoutes />
-        </main>
+      <AuthProvider>
+        <ScrollToTop />
+        <div className="min-h-screen bg-white text-slate-900 flex flex-col font-sans antialiased selection:bg-lime-200 selection:text-emerald-950">
+          <Navbar />
+          
+          <main className="flex-grow">
+            <AnimatedRoutes />
+          </main>
 
-        <Footer />
-      </div>
+          <Footer />
+        </div>
+      </AuthProvider>
     </BrowserRouter>
   );
 }

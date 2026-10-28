@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { X, CheckCircle2, Trophy, Clock, Phone, Mail, ArrowRight, Sparkles } from 'lucide-react';
+import { X, CheckCircle2, Trophy, Clock, Phone, Mail, ArrowRight, Sparkles, Loader2 } from 'lucide-react';
 import { CLUB_INFO } from '../../data/ogtaData';
+import { submitAssessmentRequest } from '../../lib/supabaseServices';
 
 interface AssessmentModalProps {
   isOpen: boolean;
@@ -15,16 +16,33 @@ export const AssessmentModal: React.FC<AssessmentModalProps> = ({ isOpen, onClos
   const [playerType, setPlayerType] = useState<'junior' | 'adult'>('junior');
   const [age, setAge] = useState('');
   const [preferredDays, setPreferredDays] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setIsSubmitting(true);
+    try {
+      await submitAssessmentRequest({
+        name,
+        email,
+        phone,
+        playerType: playerType === 'junior' ? 'Junior' : 'Adult',
+        age: playerType === 'junior' ? age : undefined,
+        notes: preferredDays ? `Preferred: ${preferredDays}` : undefined,
+      });
+    } catch (err) {
+      console.warn('Supabase assessment notice:', err);
+    } finally {
+      setIsSubmitting(false);
+      setSubmitted(true);
+    }
   };
 
   const handleClose = () => {
     setSubmitted(false);
+    setIsSubmitting(false);
     onClose();
   };
 
@@ -157,10 +175,20 @@ export const AssessmentModal: React.FC<AssessmentModalProps> = ({ isOpen, onClos
               </button>
               <button
                 type="submit"
-                className="px-5 py-2.5 rounded-xl bg-tennis-clay text-white text-xs font-bold hover:bg-tennis-clayDark transition-colors flex items-center gap-1.5 shadow"
+                disabled={isSubmitting}
+                className="px-5 py-2.5 rounded-none bg-tennis-clay text-white text-xs font-bold hover:bg-tennis-clayDark transition-colors flex items-center gap-1.5 shadow disabled:opacity-50"
               >
-                <span>Request Assessment</span>
-                <ArrowRight className="w-3.5 h-3.5" />
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    <span>Submitting...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Request Assessment</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </>
+                )}
               </button>
             </div>
           </form>

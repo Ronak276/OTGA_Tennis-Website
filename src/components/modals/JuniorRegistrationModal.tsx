@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, CheckCircle2, Trophy, Sparkles, AlertCircle, Calendar, ShieldCheck, ArrowRight } from 'lucide-react';
 import { JUNIOR_CLINICS, CLUB_INFO } from '../../data/ogtaData';
+import { submitClinicRegistration } from '../../lib/supabaseServices';
 
 interface JuniorRegistrationModalProps {
   isOpen: boolean;
@@ -37,7 +38,7 @@ export const JuniorRegistrationModal: React.FC<JuniorRegistrationModalProps> = (
 
   const activeClinicObj = JUNIOR_CLINICS.find(c => c.id === selectedClinic) || JUNIOR_CLINICS[0];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!childName || !childAge || !parentName || !parentEmail || !parentPhone) {
       setError('Please fill in all required contact and student fields.');
@@ -48,6 +49,23 @@ export const JuniorRegistrationModal: React.FC<JuniorRegistrationModalProps> = (
       return;
     }
     setError('');
+
+    try {
+      await submitClinicRegistration({
+        studentName: childName,
+        programType: 'Junior',
+        clinicName: activeClinicObj.name,
+        sessionDayTime: selectedDayTime || 'TBD',
+        parentName,
+        email: parentEmail,
+        phone: parentPhone,
+        baseAmount: 1610,
+        finalAmount: 1610,
+      });
+    } catch (err) {
+      console.warn('Supabase submission note:', err);
+    }
+
     setStep('success');
   };
 

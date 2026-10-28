@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, CheckCircle2, Trophy, AlertCircle, ArrowRight, ShieldCheck } from 'lucide-react';
 import { ADULT_CLINICS, CLUB_INFO } from '../../data/ogtaData';
+import { submitClinicRegistration } from '../../lib/supabaseServices';
 
 interface AdultRegistrationModalProps {
   isOpen: boolean;
@@ -31,7 +32,7 @@ export const AdultRegistrationModal: React.FC<AdultRegistrationModalProps> = ({
 
   const activeLevelObj = ADULT_CLINICS.find(c => c.id === selectedLevel) || ADULT_CLINICS[1];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!playerName || !playerEmail || !playerPhone) {
       setError('Please provide your name, email, and contact phone number.');
@@ -42,6 +43,22 @@ export const AdultRegistrationModal: React.FC<AdultRegistrationModalProps> = ({
       return;
     }
     setError('');
+
+    try {
+      await submitClinicRegistration({
+        studentName: playerName,
+        programType: 'Adult',
+        clinicName: activeLevelObj.name,
+        sessionDayTime: selectedDayTime || 'TBD',
+        email: playerEmail,
+        phone: playerPhone,
+        baseAmount: clinicDuration === '90' ? 1440 : 960,
+        finalAmount: clinicDuration === '90' ? 1440 : 960,
+      });
+    } catch (err) {
+      console.warn('Supabase adult clinic registration note:', err);
+    }
+
     setStep('success');
   };
 

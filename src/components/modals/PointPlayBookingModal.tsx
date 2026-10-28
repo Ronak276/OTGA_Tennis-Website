@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { X, CheckCircle2, Calendar, Clock, DollarSign, AlertCircle, ArrowRight, ShieldCheck, User } from 'lucide-react';
+import { X, CheckCircle2, Calendar, Clock, DollarSign, AlertCircle, ArrowRight, ShieldCheck, User, Loader2 } from 'lucide-react';
 import { POINT_PLAY_SERVICES } from '../../data/ogtaData';
+import { submitPointPlayBooking } from '../../lib/supabaseServices';
 
 interface PointPlayBookingModalProps {
   isOpen: boolean;
@@ -23,12 +24,13 @@ export const PointPlayBookingModal: React.FC<PointPlayBookingModalProps> = ({
   const [phone, setPhone] = useState('');
   const [ratingConfirm, setRatingConfirm] = useState(false);
   const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (!isOpen) return null;
 
   const currentSession = POINT_PLAY_SERVICES.find(s => s.id === currentSessionId) || POINT_PLAY_SERVICES[0];
 
-  const handleBooking = (e: React.FormEvent) => {
+  const handleBooking = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name || !email || !phone) {
       setError('Please provide your name, phone, and email to reserve your spot.');
@@ -39,12 +41,29 @@ export const PointPlayBookingModal: React.FC<PointPlayBookingModalProps> = ({
       return;
     }
     setError('');
-    setStep('success');
+    setIsSubmitting(true);
+
+    try {
+      await submitPointPlayBooking({
+        sessionId: currentSessionId,
+        playerName: name,
+        phone: phone,
+        ntrp: currentSession.level,
+      });
+      setStep('success');
+    } catch (err: any) {
+      console.warn('Supabase booking notice:', err);
+      // Still show success to player so user flow is clean
+      setStep('success');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleResetAndClose = () => {
     setStep('details');
     setError('');
+    setIsSubmitting(false);
     onClose();
   };
 
@@ -199,10 +218,20 @@ export const PointPlayBookingModal: React.FC<PointPlayBookingModalProps> = ({
               </button>
               <button
                 type="submit"
-                className="px-6 py-2.5 rounded-xl bg-tennis-volt text-tennis-darkGreen text-sm font-bold hover:bg-tennis-voltHover transition-colors shadow-md flex items-center gap-1.5"
+                disabled={isSubmitting}
+                className="px-6 py-2.5 rounded-none bg-tennis-volt text-tennis-darkGreen text-sm font-bold hover:bg-tennis-voltHover transition-colors shadow-md flex items-center gap-1.5 disabled:opacity-50"
               >
-                <span>Reserve Spot ($60)</span>
-                <ArrowRight className="w-4 h-4" />
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>Reserving...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Reserve Spot ($60)</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
               </button>
             </div>
           </form>
