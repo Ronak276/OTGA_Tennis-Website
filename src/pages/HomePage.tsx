@@ -32,7 +32,7 @@ import { AnimatedCounter } from '../components/skiper/AnimatedCounter';
 import { useSiteContent } from '../context/SiteContentContext';
 
 export const HomePage: React.FC = () => {
-  const { hero, clubInfo } = useSiteContent();
+  const { hero, clubInfo, coachesList } = useSiteContent();
   // Testimonials
   const testimonials = [
     {
@@ -676,79 +676,69 @@ export const HomePage: React.FC = () => {
               to="/meet-the-staff"
               className="text-sm font-bold text-[#0F392B] hover:text-[#C85A32] transition-colors flex items-center gap-1"
             >
-              <span>View All 7 Coaches & Bios</span>
+              <span>View All {coachesList?.length ? coachesList.length : 7} Coaches & Bios</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* Susi */}
-            <SpotlightCard className="overflow-hidden flex flex-col justify-between">
-              <div className="aspect-[4/3] bg-slate-200 overflow-hidden">
-                <img src="/images/media_22.jpg" alt="Susi Orbanowski" className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500" />
-              </div>
-              <div className="p-5 flex-1 flex flex-col justify-between">
-                <div>
-                  <span className="text-[10px] font-bold text-[#C85A32] uppercase tracking-wider block">Owner & Director</span>
-                  <h4 className="font-serif font-bold text-lg text-slate-900">Susi Orbanowski</h4>
-                  <p className="text-xs text-slate-600 mt-2 line-clamp-3">
-                    PTR certified coach with decades leading Greenwich tennis instruction, junior summer camps, and Pro Shop operations.
-                  </p>
+            {(coachesList && coachesList.length > 0 ? coachesList.slice(0, 4) : [
+              {
+                id: 'susi',
+                name: 'Susi Orbanowski',
+                role: 'Owner & Director',
+                badge: 'PTR Certified Coach',
+                image: '/images/media_22.jpg',
+                bio: 'PTR certified coach with decades leading Greenwich tennis instruction, junior summer camps, and Pro Shop operations.'
+              },
+              {
+                id: 'darren',
+                name: 'Darren Lavallee',
+                role: 'Director of Tennis',
+                badge: 'USPTA Elite Professional',
+                image: '/images/media_23.jpg',
+                bio: 'USPTA Elite Pro (highest designation), CP1 Tennis Canada, and dual B.S. in Professional Tennis Management.'
+              },
+              {
+                id: 'alex',
+                name: 'Alex Orbanowski',
+                role: 'General Manager',
+                badge: 'NCAA Division I UConn',
+                image: '/images/media_24.jpg',
+                bio: '2x State Doubles Champion (Greenwich High), NCAA Division I UConn Big East Academic All-Star.'
+              },
+              {
+                id: 'jared',
+                name: 'Jared Dye',
+                role: 'Staff Professional',
+                badge: 'Rutgers D1 Rookie of the Year',
+                image: '/images/media_25.jpg',
+                bio: 'NCAA Division I full scholarship player at Rutgers, Collegiate Rookie of the Year, and 12+ years of coaching.'
+              }
+            ]).map((coach) => (
+              <SpotlightCard key={coach.id} className="overflow-hidden flex flex-col justify-between">
+                <div className="aspect-[4/3] bg-slate-200 overflow-hidden">
+                  <img
+                    src={coach.image || '/images/media_1.jpg'}
+                    alt={coach.name}
+                    className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500"
+                    onError={(e) => {
+                      e.currentTarget.src = '/images/media_1.jpg';
+                    }}
+                  />
                 </div>
-                <span className="inline-block mt-4 text-xs font-semibold text-emerald-800">PTR Certified Coach</span>
-              </div>
-            </SpotlightCard>
-
-            {/* Darren */}
-            <SpotlightCard className="overflow-hidden flex flex-col justify-between">
-              <div className="aspect-[4/3] bg-slate-200 overflow-hidden">
-                <img src="/images/media_23.jpg" alt="Darren Lavallee" className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500" />
-              </div>
-              <div className="p-5 flex-1 flex flex-col justify-between">
-                <div>
-                  <span className="text-[10px] font-bold text-[#C85A32] uppercase tracking-wider block">Director of Tennis</span>
-                  <h4 className="font-serif font-bold text-lg text-slate-900">Darren Lavallee</h4>
-                  <p className="text-xs text-slate-600 mt-2 line-clamp-3">
-                    USPTA Elite Pro (highest designation), CP1 Tennis Canada, and dual B.S. in Professional Tennis Management.
-                  </p>
+                <div className="p-5 flex-1 flex flex-col justify-between">
+                  <div>
+                    <span className="text-[10px] font-bold text-[#C85A32] uppercase tracking-wider block">{coach.role}</span>
+                    <h4 className="font-serif font-bold text-lg text-slate-900">{coach.name}</h4>
+                    <p className="text-xs text-slate-600 mt-2 line-clamp-3">
+                      {coach.bio}
+                    </p>
+                  </div>
+                  <span className="inline-block mt-4 text-xs font-semibold text-emerald-800">{coach.badge}</span>
                 </div>
-                <span className="inline-block mt-4 text-xs font-semibold text-emerald-800">USPTA Elite Professional</span>
-              </div>
-            </SpotlightCard>
-
-            {/* Alex */}
-            <SpotlightCard className="overflow-hidden flex flex-col justify-between">
-              <div className="aspect-[4/3] bg-slate-200 overflow-hidden">
-                <img src="/images/media_24.jpg" alt="Alex Orbanowski" className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500" />
-              </div>
-              <div className="p-5 flex-1 flex flex-col justify-between">
-                <div>
-                  <span className="text-[10px] font-bold text-[#C85A32] uppercase tracking-wider block">General Manager</span>
-                  <h4 className="font-serif font-bold text-lg text-slate-900">Alex Orbanowski</h4>
-                  <p className="text-xs text-slate-600 mt-2 line-clamp-3">
-                    2x State Doubles Champion (Greenwich High), NCAA Division I UConn Big East Academic All-Star.
-                  </p>
-                </div>
-                <span className="inline-block mt-4 text-xs font-semibold text-emerald-800">NCAA Division I UConn</span>
-              </div>
-            </SpotlightCard>
-
-            {/* Jared */}
-            <SpotlightCard className="overflow-hidden flex flex-col justify-between">
-              <div className="aspect-[4/3] bg-slate-200 overflow-hidden">
-                <img src="/images/media_25.jpg" alt="Jared Dye" className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500" />
-              </div>
-              <div className="p-5 flex-1 flex flex-col justify-between">
-                <div>
-                  <span className="text-[10px] font-bold text-[#C85A32] uppercase tracking-wider block">Staff Professional</span>
-                  <h4 className="font-serif font-bold text-lg text-slate-900">Jared Dye</h4>
-                  <p className="text-xs text-slate-600 mt-2 line-clamp-3">
-                    NCAA Division I full scholarship player at Rutgers, Collegiate Rookie of the Year, and 12+ years of coaching.
-                  </p>
-                </div>
-                <span className="inline-block mt-4 text-xs font-semibold text-emerald-800">Rutgers D1 Rookie of the Year</span>
-              </div>
-            </SpotlightCard>
+              </SpotlightCard>
+            ))}
           </div>
         </div>
       </section>
