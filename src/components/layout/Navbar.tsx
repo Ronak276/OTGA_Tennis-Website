@@ -486,6 +486,14 @@ export const Navbar: React.FC = () => {
 
                     <div className="py-1">
                       <Link
+                        to="/profile"
+                        onClick={() => setUserMenuOpen(false)}
+                        className="flex items-center gap-2.5 px-3.5 py-2 text-xs font-semibold text-slate-800 hover:bg-emerald-50 hover:text-[#0F392B] transition-colors border-b border-slate-100/80 mb-1"
+                      >
+                        <User className="w-3.5 h-3.5 text-[#0F392B]" />
+                        <span>Profile & Settings</span>
+                      </Link>
+                      <Link
                         to="/book-online"
                         onClick={() => setUserMenuOpen(false)}
                         className="flex items-center gap-2.5 px-3.5 py-2 text-xs text-slate-700 hover:bg-emerald-50 hover:text-[#0F392B] transition-colors"
@@ -626,12 +634,35 @@ export const Navbar: React.FC = () => {
           </div>
 
           <div className="border-t border-slate-200 pt-4 space-y-2.5">
-            <Link
-              to="/login"
-              className="block w-full py-2.5 bg-slate-50 text-slate-800 text-center font-bold text-sm border border-slate-200 hover:bg-slate-100"
-            >
-              Member Sign In / Register
-            </Link>
+            {user ? (
+              <div className="space-y-2">
+                <Link
+                  to="/profile"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block w-full py-2.5 bg-emerald-50 text-[#0F392B] text-center font-bold text-sm border border-emerald-200 rounded"
+                >
+                  My Profile & Settings ({displayName})
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    signOut();
+                  }}
+                  className="block w-full py-2 text-red-600 text-center font-semibold text-xs hover:bg-red-50 rounded cursor-pointer"
+                >
+                  Sign Out
+                </button>
+              </div>
+            ) : (
+              <Link
+                to="/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block w-full py-2.5 bg-slate-50 text-slate-800 text-center font-bold text-sm border border-slate-200 hover:bg-slate-100 rounded"
+              >
+                Member Sign In / Register
+              </Link>
+            )}
             <Link
               to="/book-online"
               className="block w-full py-2.5 bg-[#0F392B] text-white text-center font-bold text-sm hover:bg-[#18523f]"

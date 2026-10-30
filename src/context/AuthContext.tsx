@@ -9,6 +9,9 @@ export interface UserProfile {
   phone: string;
   role: 'customer' | 'admin' | 'staff';
   player_level?: string;
+  dob?: string;
+  emergency_contact?: string;
+  emergency_phone?: string;
 }
 
 interface AuthContextType {
@@ -24,6 +27,14 @@ interface AuthContextType {
   ) => Promise<{ error: AuthError | null; user: User | null }>;
   signOut: () => Promise<void>;
   resetPassword: (email: string) => Promise<{ error: AuthError | null }>;
+  updateUserProfile: (updates: {
+    full_name?: string;
+    phone?: string;
+    dob?: string;
+    player_type?: string;
+    emergency_contact?: string;
+    emergency_phone?: string;
+  }) => Promise<{ error: Error | null }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -137,6 +148,97 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return { error };
   };
 
+  const updateUserProfile = async (updates: {
+    full_name?: string;
+    phone?: string;
+    dob?: string;
+    player_type?: string;
+    emergency_contact?: string;
+    emergency_phone?: string;
+  }) => {
+    try {
+      if (!user) throw new Error('Not logged in');
+
+      // 1. Update Auth user metadata
+      const { data: authData, error: authErr } = await supabase.auth.updateUser({
+        data: {
+          full_name: updates.full_name,
+          phone: updates.phone,
+          dob: updates.dob,
+          player_type: updates.player_type,
+        },
+      });
+      if (authErr) throw authErr;
+      if (authData.user) {
+        setUser(authData.user);
+      }
+
+      // 2. Update or insert player record in Supabase
+      const email = user.email || '';
+      const { data: existingPlayers } = await supabase
+        .from('players')
+        .select('*')
+        .eq('email', email);
+
+      const existing = existingPlayers && existingPlayers.length > 0 ? existingPlayers[0] : null;
+
+      // Maintain notes with DOB formatted
+      let notes = existing?.notes || '';
+      if (updates.dob) {
+        if (/DOB:\s*[^\s|;]+/i.test(notes)) {
+          notes = notes.replace(/DOB:\s*[^\s|;]+/i, `DOB: ${updates.dob}`);
+        } else {
+          notes = notes ? `${notes} | DOB: ${updates.dob}` : `DOB: ${updates.dob}`;
+        }
+      }
+
+      if (existing) {
+        const { error: pErr } = await supabase
+          .from('players')
+          .update({
+            name: updates.full_name || existing.name,
+            phone: updates.phone ?? existing.phone,
+            type: updates.player_type || existing.type,
+            emergency_contact: updates.emergency_contact ?? existing.emergency_contact,
+            emergency_phone: updates.emergency_phone ?? existing.emergency_phone,
+            notes,
+          })
+          .eq('id', existing.id);
+        if (pErr) console.warn('Player table sync warning:', pErr);
+      } else {
+        const { error: pErr } = await supabase.from('players').insert([
+          {
+            name: updates.full_name || user.email?.split('@')[0],
+            email,
+            phone: updates.phone || '',
+            type: updates.player_type || 'Adult',
+            emergency_contact: updates.emergency_contact || null,
+            emergency_phone: updates.emergency_phone || null,
+            notes,
+          },
+        ]);
+        if (pErr) console.warn('Player insert sync warning:', pErr);
+      }
+
+      // 3. Update local profile state
+      if (profile) {
+        setProfile({
+          ...profile,
+          full_name: updates.full_name || profile.full_name,
+          phone: updates.phone || profile.phone,
+          dob: updates.dob || profile.dob,
+          emergency_contact: updates.emergency_contact || profile.emergency_contact,
+          emergency_phone: updates.emergency_phone || profile.emergency_phone,
+        });
+      }
+
+      return { error: null };
+    } catch (err: any) {
+      console.error('Update profile error:', err);
+      return { error: err };
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -148,6 +250,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         signUp,
         signOut,
         resetPassword,
+        updateUserProfile,
       }}
     >
       {children}

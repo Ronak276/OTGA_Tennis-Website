@@ -46,6 +46,7 @@ import { BookOnlinePage } from './pages/booking/BookOnlinePage';
 
 // Authentication Pages
 import { AuthPage } from './pages/auth/AuthPage';
+import { ProfilePage } from './pages/auth/ProfilePage';
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -61,6 +62,7 @@ function AnimatedRoutes() {
         <Route path="/login" element={<PageTransition><AuthPage initialMode="login" /></PageTransition>} />
         <Route path="/signup" element={<PageTransition><AuthPage initialMode="signup" /></PageTransition>} />
         <Route path="/register" element={<PageTransition><AuthPage initialMode="signup" /></PageTransition>} />
+        <Route path="/profile" element={<PageTransition><ProfilePage /></PageTransition>} />
 
         {/* Junior Routes */}
         <Route path="/juniorprograms" element={<PageTransition><JuniorProgramsPage /></PageTransition>} />
