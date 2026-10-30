@@ -14,6 +14,7 @@ import {
   Phone
 } from 'lucide-react';
 import { CLUB_INFO } from '../../data/ogtaData';
+import { useSiteContent } from '../../context/SiteContentContext';
 import { SpotlightCard } from '../../components/skiper/SpotlightCard';
 
 export const FallClinicsPage: React.FC = () => {

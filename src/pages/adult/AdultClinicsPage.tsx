@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Users, Clock, Calendar, Phone, Mail, ArrowRight, CheckCircle2, Sparkles } from 'lucide-react';
 import { CLUB_INFO } from '../../data/ogtaData';
+import { useSiteContent } from '../../context/SiteContentContext';
 import { SpotlightCard } from '../../components/skiper/SpotlightCard';
 
 export const AdultClinicsPage: React.FC = () => {
@@ -162,7 +163,7 @@ export const AdultClinicsPage: React.FC = () => {
                     {tier.level}
                   </h3>
                   <p className="text-xs font-semibold text-[#C85A32] uppercase tracking-wider mb-4">
-                    {tier.subtitle}
+                    {(tier as any).subtitle || (tier as any).name}
                   </p>
 
                   <p className="text-xs text-slate-600 leading-relaxed mb-6 font-sans">
@@ -172,7 +173,7 @@ export const AdultClinicsPage: React.FC = () => {
                   {/* Rates and Sessions */}
                   <div className="bg-[#F7F9F6] rounded-2xl p-4 border border-slate-200/80 mb-6 space-y-1.5">
                     <div className="text-xs font-bold text-[#0F392B]">
-                      {tier.rateText}
+                      {(tier as any).rateText || (tier as any).rates}
                     </div>
                     <div className="text-[11px] text-slate-500 font-medium">
                       {tier.sessionDates}

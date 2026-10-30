@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { CLUB_INFO } from '../data/ogtaData';
+import { CLUB_INFO, JUNIOR_CLINICS, ADULT_CLINICS, JuniorClinicTier, AdultClinicTier } from '../data/ogtaData';
 
 export interface AnnouncementContent {
   enabled: boolean;
@@ -92,6 +92,8 @@ interface SiteContentContextType {
   adultData: AdultDataContent;
   coachesList: CoachContent[];
   policies: PoliciesContent;
+  juniorClinics: JuniorClinicTier[];
+  adultClinics: AdultClinicTier[];
   loading: boolean;
   refreshContent: () => Promise<void>;
 }
@@ -244,6 +246,8 @@ export const SiteContentProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const [adultData, setAdultData] = useState<AdultDataContent>(DEFAULT_ADULT_DATA);
   const [coachesList, setCoachesList] = useState<CoachContent[]>(DEFAULT_COACHES);
   const [policies, setPolicies] = useState<PoliciesContent>(DEFAULT_POLICIES);
+  const [juniorClinics, setJuniorClinics] = useState<JuniorClinicTier[]>(JUNIOR_CLINICS);
+  const [adultClinics, setAdultClinics] = useState<AdultClinicTier[]>(ADULT_CLINICS);
   const [loading, setLoading] = useState<boolean>(true);
 
   const applyContentRow = (key: string, content: any) => {
@@ -256,6 +260,8 @@ export const SiteContentProvider: React.FC<{ children: React.ReactNode }> = ({ c
     if (key === 'adult_data') setAdultData(prev => ({ ...prev, ...content }));
     if (key === 'coaches_data' && content.coaches) setCoachesList(content.coaches);
     if (key === 'policies_data') setPolicies(prev => ({ ...prev, ...content }));
+    if (key === 'junior_programs_catalog' && Array.isArray(content.clinics)) setJuniorClinics(content.clinics);
+    if (key === 'adult_programs_catalog' && Array.isArray(content.clinics)) setAdultClinics(content.clinics);
   };
 
   const fetchContent = async () => {
@@ -305,6 +311,8 @@ export const SiteContentProvider: React.FC<{ children: React.ReactNode }> = ({ c
         adultData,
         coachesList,
         policies,
+        juniorClinics,
+        adultClinics,
         loading,
         refreshContent: fetchContent,
       }}
