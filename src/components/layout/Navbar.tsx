@@ -45,7 +45,7 @@ export const Navbar: React.FC = () => {
   }, [location.pathname]);
 
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-    `px-2.5 xl:px-3.5 py-2 text-[13px] xl:text-sm font-medium transition-colors whitespace-nowrap inline-flex items-center shrink-0 ${
+    `px-1.5 xl:px-2.5 2xl:px-3.5 py-1.5 xl:py-2 text-[12px] xl:text-[13px] 2xl:text-sm font-medium transition-colors whitespace-nowrap inline-flex items-center shrink-0 rounded-lg ${
       isActive
         ? 'text-[#0F392B] bg-emerald-50 font-bold'
         : 'text-slate-700 hover:text-[#0F392B] hover:bg-slate-50'
@@ -111,8 +111,8 @@ export const Navbar: React.FC = () => {
       )}
 
       {/* Main Navbar - Full width for extreme left logo and right CTAs */}
-      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12">
-        <div className="flex items-center justify-between h-20 gap-4 xl:gap-8">
+      <div className="w-full px-4 sm:px-6 lg:px-4 xl:px-6 2xl:px-10">
+        <div className="flex items-center justify-between h-20 gap-2 xl:gap-4 2xl:gap-8">
           {/* Official Horizontal Website Logo - Extreme Left */}
           <Link 
             to="/"
@@ -121,12 +121,12 @@ export const Navbar: React.FC = () => {
             <img 
               src="/images/ogta_logo.png" 
               alt="Old Greenwich Tennis Academy (OGTA)" 
-              className="h-10 sm:h-12 w-auto object-contain group-hover:scale-105 transition-transform duration-300"
+              className="h-9 xl:h-11 2xl:h-12 w-auto object-contain group-hover:scale-105 transition-transform duration-300"
             />
           </Link>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-1 xl:gap-2 shrink-0">
+          <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1.5 2xl:gap-2 shrink-0">
             <NavLink to="/" end className={navLinkClass}>
               Home
             </NavLink>
@@ -138,7 +138,7 @@ export const Navbar: React.FC = () => {
               onMouseLeave={() => setActiveDropdown(null)}
             >
               <button
-                className={`px-2.5 xl:px-3 py-2 rounded-lg text-[13px] xl:text-sm font-medium inline-flex items-center gap-1 whitespace-nowrap shrink-0 transition-colors ${
+                className={`px-1.5 xl:px-2.5 2xl:px-3 py-1.5 xl:py-2 rounded-lg text-[12px] xl:text-[13px] 2xl:text-sm font-medium inline-flex items-center gap-0.5 xl:gap-1 whitespace-nowrap shrink-0 transition-colors ${
                   isJuniorActive
                     ? 'text-[#0F392B] bg-emerald-50 font-bold'
                     : 'text-slate-700 hover:text-[#0F392B] hover:bg-slate-50'
@@ -212,7 +212,7 @@ export const Navbar: React.FC = () => {
               onMouseLeave={() => setActiveDropdown(null)}
             >
               <button
-                className={`px-2.5 xl:px-3 py-2 rounded-lg text-[13px] xl:text-sm font-medium inline-flex items-center gap-1 whitespace-nowrap shrink-0 transition-colors ${
+                className={`px-1.5 xl:px-2.5 2xl:px-3 py-1.5 xl:py-2 rounded-lg text-[12px] xl:text-[13px] 2xl:text-sm font-medium inline-flex items-center gap-0.5 xl:gap-1 whitespace-nowrap shrink-0 transition-colors ${
                   isAdultActive
                     ? 'text-[#0F392B] bg-emerald-50 font-bold'
                     : 'text-slate-700 hover:text-[#0F392B] hover:bg-slate-50'
@@ -278,7 +278,7 @@ export const Navbar: React.FC = () => {
               onMouseLeave={() => setActiveDropdown(null)}
             >
               <button
-                className={`px-2.5 xl:px-3 py-2 rounded-lg text-[13px] xl:text-sm font-medium inline-flex items-center gap-1 whitespace-nowrap shrink-0 transition-colors ${
+                className={`px-1.5 xl:px-2.5 2xl:px-3 py-1.5 xl:py-2 rounded-lg text-[12px] xl:text-[13px] 2xl:text-sm font-medium inline-flex items-center gap-0.5 xl:gap-1 whitespace-nowrap shrink-0 transition-colors ${
                   isRentalsActive
                     ? 'text-[#0F392B] bg-emerald-50 font-bold'
                     : 'text-slate-700 hover:text-[#0F392B] hover:bg-slate-50'
@@ -330,7 +330,7 @@ export const Navbar: React.FC = () => {
               onMouseLeave={() => setActiveDropdown(null)}
             >
               <button
-                className={`px-2.5 xl:px-3 py-2 rounded-lg text-[13px] xl:text-sm font-medium inline-flex items-center gap-1 whitespace-nowrap shrink-0 transition-colors ${
+                className={`px-1.5 xl:px-2.5 2xl:px-3 py-1.5 xl:py-2 rounded-lg text-[12px] xl:text-[13px] 2xl:text-sm font-medium inline-flex items-center gap-0.5 xl:gap-1 whitespace-nowrap shrink-0 transition-colors ${
                   isAboutActive
                     ? 'text-[#0F392B] bg-emerald-50 font-bold'
                     : 'text-slate-700 hover:text-[#0F392B] hover:bg-slate-50'
@@ -397,19 +397,19 @@ export const Navbar: React.FC = () => {
           </nav>
 
           {/* Desktop Right CTA - Extreme Right */}
-          <div className="hidden lg:flex items-center gap-3 shrink-0">
+          <div className="hidden lg:flex items-center gap-1.5 xl:gap-2.5 2xl:gap-3 shrink-0">
             {user ? (
               <div className="inline-flex items-center gap-2 shrink-0">
-                <span className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-slate-700 bg-slate-100 border border-slate-200 whitespace-nowrap">
+                <span className="inline-flex items-center gap-1 xl:gap-1.5 px-2 xl:px-3 py-1.5 xl:py-2 text-[11px] xl:text-xs font-semibold text-slate-700 bg-slate-100 border border-slate-200 whitespace-nowrap rounded">
                   <User className="w-3.5 h-3.5 text-[#0F392B] shrink-0" />
-                  <span className="max-w-[140px] truncate">
+                  <span className="max-w-[85px] xl:max-w-[140px] truncate">
                     {user.user_metadata?.full_name || user.email?.split('@')[0]}
                   </span>
                 </span>
                 <button
                   onClick={() => signOut()}
                   title="Sign Out"
-                  className="p-2 text-slate-500 hover:text-red-700 hover:bg-red-50 border border-slate-200 transition-colors shrink-0"
+                  className="p-1.5 xl:p-2 text-slate-500 hover:text-red-700 hover:bg-red-50 border border-slate-200 rounded transition-colors shrink-0"
                 >
                   <LogOut className="w-3.5 h-3.5" />
                 </button>
@@ -417,7 +417,7 @@ export const Navbar: React.FC = () => {
             ) : (
               <Link
                 to="/login"
-                className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-slate-700 hover:text-[#0F392B] hover:bg-slate-50 transition-colors border border-slate-200 whitespace-nowrap shrink-0"
+                className="inline-flex items-center gap-1 xl:gap-1.5 px-2.5 xl:px-3.5 py-1.5 xl:py-2 text-[11px] xl:text-xs font-semibold text-slate-700 hover:text-[#0F392B] hover:bg-slate-50 transition-colors border border-slate-200 rounded whitespace-nowrap shrink-0"
               >
                 <User className="w-3.5 h-3.5 text-slate-500 shrink-0" />
                 <span>Sign In</span>
@@ -426,7 +426,7 @@ export const Navbar: React.FC = () => {
 
             <Link
               to="/book-online"
-              className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#0F392B] text-white font-medium hover:bg-[#18523f] transition-all text-xs shadow-sm whitespace-nowrap shrink-0"
+              className="inline-flex items-center gap-1 xl:gap-1.5 px-2.5 xl:px-3.5 py-1.5 xl:py-2 bg-[#0F392B] text-white font-medium hover:bg-[#18523f] transition-all text-[11px] xl:text-xs shadow-sm whitespace-nowrap shrink-0 rounded"
             >
               <Calendar className="w-3.5 h-3.5 text-lime-300 shrink-0" />
               <span>Book Point Play ($60)</span>
